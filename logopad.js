@@ -3,9 +3,9 @@
 // @namespace   Violentmonkey Scripts
 // @match       https://*.pad.cz/diar*
 // @grant       none
-// @version     1.1
-// @author      David Vondrak
-// @description 3/2/2025, 8:15:00 PM
+// @version     1.2
+// @author      VonDav
+// @description 3/2/2025, 8:41:00 PM
 // ==/UserScript==
 
 (function() {
@@ -34,18 +34,18 @@
     ];
 
     const monthsMap = {
-        'leden': 'January',
-        'únor': 'February',
-        'březen': 'March',
-        'duben': 'April',
-        'květen': 'May',
-        'červen': 'June',
-        'červenec': 'July',
-        'srpen': 'August',
+        'ledna': 'January',
+        'února': 'February',
+        'března': 'March',
+        'dubna': 'April',
+        'května': 'May',
+        'června': 'June',
+        'července': 'July',
+        'srpna': 'August',
         'září': 'September',
-        'říjen': 'October',
-        'listopad': 'November',
-        'prosinec': 'December'
+        'října': 'October',
+        'listopadu': 'November',
+        'prosince': 'December'
     };
 
     function addCustomCSS() {
