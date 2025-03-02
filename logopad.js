@@ -3,9 +3,9 @@
 // @namespace   Violentmonkey Scripts
 // @match       https://*.pad.cz/diar*
 // @grant       none
-// @version     1.0
-// @author      -
-// @description 3/2/2025, 4:14:04 PM
+// @version     1.1
+// @author      David Vondrak
+// @description 3/2/2025, 8:15:00 PM
 // ==/UserScript==
 
 (function() {
@@ -33,6 +33,21 @@
         new Date(2025, 11, 26)  // 26.12.
     ];
 
+    const monthsMap = {
+        'leden': 'January',
+        'únor': 'February',
+        'březen': 'March',
+        'duben': 'April',
+        'květen': 'May',
+        'červen': 'June',
+        'červenec': 'July',
+        'srpen': 'August',
+        'září': 'September',
+        'říjen': 'October',
+        'listopad': 'November',
+        'prosinec': 'December'
+    };
+
     function addCustomCSS() {
         let style = document.createElement('style');
         style.innerHTML = `
@@ -55,6 +70,25 @@
         document.head.appendChild(style);
     }
 
+    function parseDate(dateString) {
+        let parsedDate = new Date(dateString);
+        if (!isNaN(parsedDate))
+            return parsedDate;
+
+        const match = dateString.match(/(\d+)\.?\s*([a-zá-ž]+)\s+(\d{4})/i);
+        if (match) {
+            const day = match[1];
+            const monthCzech = match[2].toLowerCase();
+            const year = match[3];
+
+            const monthEnglish = monthsMap[monthCzech];
+            if (monthEnglish) {
+                return new Date(`${monthEnglish} ${day}, ${year}`);
+            }
+        }
+        return null;
+    }
+
     function isStatnivatek(date) {
         return statniSvatky.some(svatek =>
             svatek.getDate() === date.getDate() &&
@@ -72,7 +106,7 @@
 
     function modifyCalendar() {
         document.querySelectorAll('.react-calendar__tile').forEach(button => {
-            const date = new Date(button.querySelector('abbr').getAttribute('aria-label'));
+            const date = parseDate(button.querySelector('abbr').getAttribute('aria-label'));
             if (isStatnivatek(date)) {
                 button.classList.add('dv-statni-svatek');
             }
