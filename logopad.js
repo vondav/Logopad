@@ -3,9 +3,9 @@
 // @namespace   Violentmonkey Scripts
 // @match       https://*.pad.cz/diar*
 // @grant       none
-// @version     1.2
+// @version     2025-03-03
 // @author      VonDav
-// @description 3/2/2025, 8:41:00 PM
+// @description Logopad - Zobrazeni svatku, lichych tydnu, neplanovanych pracovnich dni
 // ==/UserScript==
 
 (function() {
@@ -17,6 +17,17 @@
         new Date(2025, 4, 5),
         new Date(2025, 7, 6),
         new Date(2025, 7, 18),
+    ];
+
+    const velikonoce = [
+        new Date(2025, 3, 18),
+        new Date(2025, 3, 21),
+        new Date(2026, 3, 3),
+        new Date(2026, 3, 6),
+        new Date(2027, 2, 26),
+        new Date(2027, 2, 29),
+        new Date(2028, 3, 14),
+        new Date(2028, 3, 17),
     ];
 
     const statniSvatky = [
@@ -89,6 +100,14 @@
         return null;
     }
 
+    function isVelikonoce(date) {
+        return velikonoce.some(den =>
+            den.getDate() === date.getDate() &&
+            den.getMonth() === date.getMonth() &&
+            den.getFullYear() === date.getFullYear()
+        );
+    }
+
     function isStatnivatek(date) {
         return statniSvatky.some(svatek =>
             svatek.getDate() === date.getDate() &&
@@ -107,7 +126,7 @@
     function modifyCalendar() {
         document.querySelectorAll('.react-calendar__tile').forEach(button => {
             const date = parseDate(button.querySelector('abbr').getAttribute('aria-label'));
-            if (isStatnivatek(date)) {
+            if (isStatnivatek(date) || isVelikonoce(date)) {
                 button.classList.add('dv-statni-svatek');
             }
             if (isOddWeekISO(date)) {
