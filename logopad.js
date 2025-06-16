@@ -3,7 +3,7 @@
 // @namespace   Violentmonkey Scripts
 // @match       https://*.pad.cz/diar*
 // @grant       none
-// @version     2025-06-16
+// @version     2025-06-17
 // @author      VonDav
 // @description Logopad - Zobrazeni svatku, lichych tydnu, neplanovanych pracovnich dni
 // ==/UserScript==
@@ -18,7 +18,7 @@
         new Date(2025, 4, 5),
         new Date(2025, 7, 6),
         new Date(2025, 7, 18),
-        new Date(2025, 8, 29),
+        new Date(2025, 7, 29),
     ];
 
     const velikonoce = [
