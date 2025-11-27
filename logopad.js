@@ -18,6 +18,8 @@
         new Date(2025, 4, 5),   //  5.5.
         new Date(2025, 7, 18),  // 18.8.
         new Date(2025, 7, 29),  // 29.8.
+		
+		new Date(2026, 0, 22),  // 22.9. - hory
     ];
 
     const velikonoce = [
