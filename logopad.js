@@ -3,7 +3,7 @@
 // @namespace   Violentmonkey Scripts
 // @match       https://*.pad.cz/diar*
 // @grant       none
-// @version     2026-05-05
+// @version     2026-06-04
 // @author      VonDav
 // @description Logopad - Zobrazeni svatku, lichych tydnu, neplanovanych pracovnich dni
 // ==/UserScript==
@@ -23,7 +23,7 @@
         new Date(2026, 1, 16),  // 16.2.
         new Date(2026, 5, 17),  // 17.6.
         new Date(2026, 6, 8),  // 8.7.
-        new Date(2026, 6, 22),  // 22.7.
+        //new Date(2026, 6, 22),  // 22.7.
         new Date(2026, 7, 19),  // 19.8.
         new Date(2026, 7, 26),  // 26.8.
     ];
