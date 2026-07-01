@@ -3,7 +3,7 @@
 // @namespace   Violentmonkey Scripts
 // @match       https://*.pad.cz/diar*
 // @grant       none
-// @version     2026-06-10
+// @version     2026-07-01
 // @author      VonDav
 // @description Logopad - Zobrazeni svatku, lichych tydnu, neplanovanych pracovnich dni
 // ==/UserScript==
@@ -24,7 +24,7 @@
         new Date(2026, 5, 17),  // 17.6.
         new Date(2026, 6, 8),  // 8.7.
         //new Date(2026, 6, 22),  // 22.7.
-        new Date(2026, 7, 19),  // 19.8.
+        //new Date(2026, 7, 19),  // 19.8.
         new Date(2026, 7, 26),  // 26.8.
         new Date(2026, 9, 12),  // 12.10.
     ];
@@ -71,7 +71,7 @@
         'prosince': 'December'
     };
 
-    function addCustomCSS() {
+    function addCustomCSSOld() {
         let style = document.createElement('style');
         style.innerHTML = `
             .dv-statni-svatek {
@@ -80,11 +80,7 @@
 
             .dv-statni-svatek:hover {
                 background-color: #f2f2f2 !important;
-            }
-
-            .dv-lichy-tyden {
-                border: 2px #ea9946 solid !important;
-            }
+            }            
 
             .dv-pracuji {
                 background-color: #9dcbcf !important;
@@ -92,6 +88,23 @@
         `;
         document.head.appendChild(style);
     }
+    
+    function addCustomCSS() {
+        let style = document.createElement('style');
+        style.innerHTML = `
+            .dv-statni-svatek {
+                background-color: violet !important;
+                color: black !important;
+            }
+
+            .dv-pracuji {
+                background-color: #9dcbcf !important;
+                color: black !important;
+            }
+        `;
+        document.head.appendChild(style);
+    }
+
 
     function parseDate(dateString) {
         let parsedDate = new Date(dateString);
@@ -135,28 +148,45 @@
         );
     }
 
-    function modifyCalendar() {
+    function modifyCalendarOld() {
         document.querySelectorAll('.react-calendar__tile').forEach(button => {
             const date = parseDate(button.querySelector('abbr').getAttribute('aria-label'));
             if (isStatnivatek(date) || isVelikonoce(date)) {
                 button.classList.add('dv-statni-svatek');
-            }
-            if (isOddWeekISO(date)) {
-                button.classList.add('dv-lichy-tyden');
-            }
+            }            
             if (isPracuji(date)) {
                 button.classList.add('dv-pracuji');
             }
         });
     }
+    
+    function modifyCalendar() {
+        document.querySelectorAll('button[aria-label]').forEach(button => {
 
-    function isOddWeekISO(date) {
-        const firstDayOfYear = new Date(date.getFullYear(), 0, 1);
-        const dayOffset = (firstDayOfYear.getDay() + 6) % 7;
-        const pastDaysOfYear = (date - firstDayOfYear + dayOffset * 86400000) / 86400000;
-        const weekNumber = Math.ceil((pastDaysOfYear + 1) / 7);
-        return weekNumber % 2 === 1;
-    }
+        const ariaLabel = button.getAttribute('aria-label');
+
+        // zajímá nás pouze tlačítko dne v kalendáři
+        if (!/^\d+\.\s*[a-zá-ž]+\s+\d{4}$/i.test(ariaLabel)) {
+            return;
+        }
+
+        const date = parseDate(ariaLabel);
+
+        if (!date) {
+            return;
+        }
+
+        button.classList.remove('dv-statni-svatek', 'dv-pracuji');
+
+        if (isStatnivatek(date) || isVelikonoce(date)) {
+            button.classList.add('dv-statni-svatek');
+        }
+
+        if (isPracuji(date)) {
+            button.classList.add('dv-pracuji');
+        }
+    });
+}
 
     // aktivace po nacteni stranky
     window.addEventListener('load', () => {
